@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ZapOrçamento - Orçamentos e Recibos Rápidos</title>
 
-    <!-- Configurações PWA (Instalação no Telemóvel) -->
+    <!-- Configurações PWA (Instalação no Celular) -->
     <link rel="manifest" href="manifest.json" />
     <meta name="theme-color" content="#090d16" />
     <meta name="mobile-web-app-capable" content="yes" />
@@ -165,7 +165,7 @@
         width: 100%;
       }
 
-      /* Upload e Pré-visualização do Logótipo */
+      /* Upload e Pré-visualização do Logotipo */
       .logo-upload-box {
         display: flex;
         align-items: center;
@@ -309,6 +309,10 @@
         transition: 0.2s;
       }
 
+      .btn-whats:hover {
+        background: #20ba5a;
+      }
+
       .btn-pdf {
         background: var(--accent);
         color: #0f172a;
@@ -320,7 +324,7 @@
         cursor: pointer;
       }
 
-      /* Secção do Histórico */
+      /* Histórico */
       .historico-lista {
         display: flex;
         flex-direction: column;
@@ -381,7 +385,7 @@
         }
       }
 
-      /* ESTILOS DE IMPRESSÃO / FOLHA PDF COM MARCA D'ÁGUA */
+      /* Folha PDF com Marca d'água Lodysteelbr */
       @media print {
         body {
           background: white !important;
@@ -401,7 +405,6 @@
           position: relative;
           min-height: 90vh;
         }
-        /* Marca d'água diagonal elegante no PDF */
         .marca-dagua-impressao {
           position: fixed;
           top: 48%;
@@ -434,9 +437,9 @@
       <div class="card">
         <h2>1. Meus Dados (Salvos no aparelho)</h2>
         
-        <!-- Logótipo / Imagem -->
+        <!-- Logotipo do Negócio -->
         <div class="campo">
-          <label>Logótipo do Negócio (Opcional - Sai no PDF)</label>
+          <label>Logotipo do Negócio (Opcional - Sai no PDF)</label>
           <div class="logo-upload-box">
             <img id="logoPreview" class="logo-preview-img" alt="Logo" />
             <div style="flex: 1;">
@@ -516,12 +519,12 @@
         </div>
       </div>
 
-      <!-- 4. Observações / Assistente Inteligente -->
+      <!-- 4. Observações / Assistente -->
       <div class="card">
         <h2>4. Condições e Termos</h2>
         <div class="assistente-box">
           <div class="chips-container">
-            <button class="chip-btn" onclick="inserirClausula('padrao')">📅 Padrão (50% início / 50% fim)</button>
+            <button class="chip-btn" onclick="inserirClausula('padrao')">📅 Padrão (50% entrada / 50% entrega)</button>
             <button class="chip-btn" onclick="inserirClausula('garantia')">🛡️ Garantia de 90 Dias</button>
             <button class="chip-btn" onclick="inserirClausula('materiais')">📦 Materiais à parte</button>
             <button class="chip-btn" onclick="inserirClausula('desconto')">💰 5% desconto à vista</button>
@@ -534,7 +537,7 @@
         </div>
       </div>
 
-      <!-- Ações Principais -->
+      <!-- Ações -->
       <div class="acoes">
         <button class="btn-whats" onclick="enviarWhatsApp()">
           📲 Enviar Proposta pelo WhatsApp
@@ -544,7 +547,7 @@
         </button>
       </div>
 
-      <!-- 5. Histórico de Orçamentos -->
+      <!-- 5. Histórico -->
       <div class="card">
         <h2>
           <span>📜 Histórico de Propostas</span>
@@ -557,25 +560,20 @@
 
       <div class="marca-dagua-app">Desenvolvido com tecnologia • Lodysteelbr</div>
 
-      <!-- Área de Impressão / PDF -->
       <div id="folhaImpressao"></div>
     </div>
 
     <script>
-      // ==========================================
-      // REGISTO DO SERVICE WORKER (PWA)
-      // ==========================================
+      // Service Worker (PWA)
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
           navigator.serviceWorker.register("sw.js").catch((err) => {
-            console.log("Service Worker não suportado no ambiente local:", err);
+            console.log("Service Worker:", err);
           });
         });
       }
 
-      // ==========================================
-      // SISTEMA DE ÁUDIO WEB
-      // ==========================================
+      // Sistema de Áudio Web
       let audioCtx = null;
       function getAudioContext() {
         if (!audioCtx) {
@@ -633,9 +631,7 @@
         } catch (e) {}
       }
 
-      // ==========================================
-      // VALIDAÇÃO OFICIAL DE CPF
-      // ==========================================
+      // Validação Oficial de CPF
       function testarValidadeCPF(strCPF) {
         let cpf = strCPF.replace(/\D/g, "");
         if (cpf.length !== 11) return false;
@@ -718,9 +714,7 @@
         salvarMeusDados();
       }
 
-      // ==========================================
-      // SUPORTE AO LOGÓTIPO
-      // ==========================================
+      // Suporte ao Logotipo
       function salvarLogo(e) {
         const file = e.target.files[0];
         if (!file) return;
@@ -752,9 +746,7 @@
         }
       }
 
-      // ==========================================
-      // PERSISTÊNCIA E INICIALIZAÇÃO
-      // ==========================================
+      // Persistência Inicial
       window.onload = function () {
         const nomeSalvo = localStorage.getItem("prestador_nome");
         const pixSalva = localStorage.getItem("prestador_pix");
@@ -778,9 +770,7 @@
         localStorage.setItem("prestador_tipo_pix", document.getElementById("tipoPix").value);
       }
 
-      // ==========================================
-      // ITENS E CÁLCULO
-      // ==========================================
+      // Gestão de Itens
       function adicionarItem() {
         const lista = document.getElementById("listaItens");
         const div = document.createElement("div");
@@ -829,7 +819,7 @@
         const clausulas = {
           padrao: "Proposta válida por 7 dias. Pagamento: 50% de entrada e 50% na conclusão dos trabalhos.",
           garantia: "Garantia legal de 90 dias sobre a mão de obra prestada, mediante apresentação desta proposta.",
-          materiais: "Valores referentes apenas à mão de obra. Materiais extras ficam a cargo do cliente.",
+          materiais: "Valores referentes apenas à mão de obra. Materiais extras ficam por conta do cliente.",
           desconto: "Pagamento integral à vista no PIX conta com 5% de desconto promocional."
         };
 
@@ -852,13 +842,11 @@
         somConfirmacao();
       }
 
-      // ==========================================
-      // HISTÓRICO DE ORÇAMENTOS
-      // ==========================================
+      // Histórico
       function salvarNoHistorico(dados) {
         let historico = JSON.parse(localStorage.getItem("zap_historico") || "[]");
         historico.unshift(dados);
-        if (historico.length > 25) historico.pop(); // Guarda até 25 orçamentos
+        if (historico.length > 25) historico.pop();
         localStorage.setItem("zap_historico", JSON.stringify(historico));
         renderizarHistorico();
       }
@@ -932,9 +920,7 @@
         }
       }
 
-      // ==========================================
-      // AÇÕES (WHATSAPP E PDF COM MARCA D'ÁGUA)
-      // ==========================================
+      // Envio e PDF
       function coletarDadosFormulario() {
         const tipoPix = document.getElementById("tipoPix").value;
         const chavePix = document.getElementById("minhaPix").value.trim();
@@ -1037,7 +1023,6 @@
 
         const folha = document.getElementById("folhaImpressao");
         folha.innerHTML = `
-          <!-- Marca d'água Lodysteelbr no documento impresso -->
           <div class="marca-dagua-impressao">LODYSTEELBR</div>
 
           <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid #0f172a; padding-bottom: 15px; margin-bottom: 20px;">
