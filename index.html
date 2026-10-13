@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZapOrçamento - Orçamentos e Recibos Rápidos</title>
+    <style>
+      :root {
+        --primary: #059669;
+        --primary-hover: #047857;
+        --bg: #0f172a;
+        --card: #1e293b;
+        --border: #334155;
+        --text: #f8fafc;
+        --text-muted: #94a3b8;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+
+      body {
+        background-color: var(--bg);
+        color: var(--text);
+        padding: 20px 12px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 520px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 8px;
+      }
+
+      header h1 {
+        font-size: 24px;
+        color: #34d399;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      header p {
+        font-size: 13px;
+        color: var(--text-muted);
+        margin-top: 4px;
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .card h2 {
+        font-size: 16px;
+        color: #38bdf8;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 6px;
+      }
+
+      .campo {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      label {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-muted);
+        text-transform: uppercase;
+      }
+
+      input, select, textarea {
+        background: #0f172a;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px 12px;
+        color: #fff;
+        font-size: 15px;
+        outline: none;
+      }
+
+      input:focus, select:focus, textarea:focus {
+        border-color: #34d399;
+      }
+
+      .linha-dupla {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      /* Lista de Itens */
+      .item-linha {
+        display: grid;
+        grid-template-columns: 2fr 1fr auto;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 8px;
+      }
+
+      .btn-remover {
+        background: #ef4444;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        width: 34px;
+        height: 38px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      .btn-adicionar {
+        background: #334155;
+        color: #38bdf8;
+        border: 1px dashed #38bdf8;
+        border-radius: 8px;
+        padding: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      .btn-adicionar:hover {
+        background: #1e293b;
+      }
+
+      .total-box {
+        background: #090d16;
+        padding: 12px 16px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 18px;
+        font-weight: bold;
+        color: #34d399;
+        border: 1px solid #059669;
+      }
+
+      /* Ações principais */
+      .acoes {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .btn-whats {
+        background: #25d366;
+        color: #0b141a;
+        border: none;
+        padding: 14px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: 0.2s;
+      }
+
+      .btn-whats:hover {
+        background: #20ba5a;
+      }
+
+      .btn-pdf {
+        background: #38bdf8;
+        color: #0f172a;
+        border: none;
+        padding: 12px;
+        font-size: 15px;
+        font-weight: bold;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      /* VISUAL DE IMPRESSÃO / PDF LIMPO */
+      @media print {
+        body {
+          background: white !important;
+          color: black !important;
+          padding: 0;
+        }
+
+        .container {
+          max-width: 100%;
+        }
+
+        header, .card, .acoes, .btn-adicionar, .btn-remover {
+          display: none !important;
+        }
+
+        #folhaImpressao {
+          display: block !important;
+          color: black;
+          padding: 30px;
+          border: 1px solid #ccc;
+        }
+      }
+
+      #folhaImpressao {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>⚡ ZapOrçamento</h1>
+        <p>Crie orçamentos e recibos profissionais em segundos</p>
+      </header>
+
+      <!-- Meus Dados (Fica gravado na memória do aparelho) -->
+      <div class="card">
+        <h2>1. Meus Dados (Salvos no aparelho)</h2>
+        <div class="campo">
+          <label>Seu Nome ou Nome do Negócio</label>
+          <input type="text" id="meuNome" placeholder="Ex: Silva Manutenções Elétricas" onchange="salvarMeusDados()" />
+        </div>
+        <div class="linha-dupla">
+          <div class="campo">
+            <label>Sua Chave PIX</label>
+            <input type="text" id="minhaPix" placeholder="CPF, Celular ou E-mail" onchange="salvarMeusDados()" />
+          </div>
+          <div class="campo">
+            <label>Tipo de Documento</label>
+            <select id="tipoDoc">
+              <option value="ORÇAMENTO">Orçamento</option>
+              <option value="RECIBO DE PAGAMENTO">Recibo</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dados do Cliente -->
+      <div class="card">
+        <h2>2. Dados do Cliente</h2>
+        <div class="linha-dupla">
+          <div class="campo">
+            <label>Nome do Cliente</label>
+            <input type="text" id="clienteNome" placeholder="Ex: Roberto Carlos" />
+          </div>
+          <div class="campo">
+            <label>WhatsApp (com DDD)</label>
+            <input type="tel" id="clienteWhats" placeholder="Ex: 11999998888" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Serviços / Itens -->
+      <div class="card">
+        <h2>3. Serviços ou Produtos</h2>
+        <div id="listaItens">
+          <div class="item-linha">
+            <input type="text" class="item-desc" placeholder="Descrição do serviço" />
+            <input type="number" class="item-valor" placeholder="R$ 0,00" oninput="atualizarTotal()" />
+            <button class="btn-remover" onclick="removerItem(this)">✕</button>
+          </div>
+        </div>
+        <button class="btn-adicionar" onclick="adicionarItem()">+ Adicionar outro serviço</button>
+
+        <div class="total-box">
+          <span>Total Geral:</span>
+          <span id="valorTotal">R$ 0,00</span>
+        </div>
+      </div>
+
+      <!-- Observações / Validade -->
+      <div class="card">
+        <div class="campo">
+          <label>Condições / Observações</label>
+          <textarea id="observacoes" rows="2" placeholder="Ex: Válido por 7 dias. Pagamento 50% no início e 50% na conclusão."></textarea>
+        </div>
+      </div>
+
+      <!-- Botões de Ação -->
+      <div class="acoes">
+        <button class="btn-whats" onclick="enviarWhatsApp()">
+          📲 Enviar Proposta pelo WhatsApp
+        </button>
+        <button class="btn-pdf" onclick="imprimirPDF()">
+          📄 Salvar em PDF / Imprimir
+        </button>
+      </div>
+
+      <!-- Folha formatada gerada dinamicamente para o PDF/Impressão -->
+      <div id="folhaImpressao"></div>
+    </div>
+
+    <script>
+      // 1. Carrega dados do prestador salvos no navegador (localStorage)
+      window.onload = function () {
+        const nomeSalvo = localStorage.getItem("prestador_nome");
+        const pixSalva = localStorage.getItem("prestador_pix");
+        if (nomeSalvo) document.getElementById("meuNome").value = nomeSalvo;
+        if (pixSalva) document.getElementById("minhaPix").value = pixSalva;
+      };
+
+      function salvarMeusDados() {
+        localStorage.setItem("prestador_nome", document.getElementById("meuNome").value);
+        localStorage.setItem("prestador_pix", document.getElementById("minhaPix").value);
+      }
+
+      // 2. Gerenciador de itens/serviços
+      function adicionarItem() {
+        const lista = document.getElementById("listaItens");
+        const div = document.createElement("div");
+        div.className = "item-linha";
+        div.innerHTML = `
+          <input type="text" class="item-desc" placeholder="Descrição do serviço" />
+          <input type="number" class="item-valor" placeholder="R$ 0,00" oninput="atualizarTotal()" />
+          <button class="btn-remover" onclick="removerItem(this)">✕</button>
+        `;
+        lista.appendChild(div);
+      }
+
+      function removerItem(btn) {
+        const itens = document.querySelectorAll(".item-linha");
+        if (itens.length > 1) {
+          btn.parentElement.remove();
+          atualizarTotal();
+        } else {
+          alert("O documento precisa ter pelo menos um item.");
+        }
+      }
+
+      function calcularTotal() {
+        const valores = document.querySelectorAll(".item-valor");
+        let soma = 0;
+        valores.forEach((input) => {
+          const val = parseFloat(input.value);
+          if (!isNaN(val)) soma += val;
+        });
+        return soma;
+      }
+
+      function atualizarTotal() {
+        const total = calcularTotal();
+        document.getElementById("valorTotal").innerText = total.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL"
+        });
+      }
+
+      // 3. Montar a mensagem e abrir o WhatsApp do cliente
+      function enviarWhatsApp() {
+        const meuNome = document.getElementById("meuNome").value.trim() || "Prestador";
+        const minhaPix = document.getElementById("minhaPix").value.trim();
+        const tipo = document.getElementById("tipoDoc").value;
+        const cliente = document.getElementById("clienteNome").value.trim() || "Cliente";
+        let whats = document.getElementById("clienteWhats").value.replace(/\D/g, "");
+        const obs = document.getElementById("observacoes").value.trim();
+
+        const descs = document.querySelectorAll(".item-desc");
+        const vals = document.querySelectorAll(".item-valor");
+
+        let listaTexto = "";
+        let temItem = false;
+
+        descs.forEach((d, i) => {
+          const descTexto = d.value.trim();
+          const valorNum = parseFloat(vals[i].value);
+          if (descTexto && !isNaN(valorNum)) {
+            temItem = true;
+            listaTexto += `• ${descTexto}: R$ ${valorNum.toFixed(2).replace(".", ",")}\n`;
+          }
+        });
+
+        if (!temItem) {
+          alert("Por favor, preencha ao menos uma descrição e um valor.");
+          return;
+        }
+
+        const totalFormatado = calcularTotal().toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+        const dataHoje = new Date().toLocaleDateString("pt-BR");
+
+        // Formatação profissional do texto para o WhatsApp
+        let msg = `📄 *${tipo} DE SERVIÇO*\n\n`;
+        msg += `👤 *Cliente:* ${cliente}\n`;
+        msg += `🛠️ *Profissional:* ${meuNome}\n`;
+        msg += `📅 *Data:* ${dataHoje}\n`;
+        msg += `─────────────────────────\n`;
+        msg += `📋 *ITENS:*\n${listaTexto}`;
+        msg += `─────────────────────────\n`;
+        msg += `💰 *TOTAL:* ${totalFormatado}\n\n`;
+
+        if (minhaPix) {
+          msg += `🔑 *Chave PIX:* ${minhaPix}\n`;
+        }
+        if (obs) {
+          msg += `📌 *Obs:* ${obs}\n`;
+        }
+
+        msg += `\n_Agradecemos pela preferência!_`;
+
+        // Se o número não tiver código do país (55), adiciona automaticamente
+        if (whats && !whats.startsWith("55") && whats.length >= 10) {
+          whats = "55" + whats;
+        }
+
+        const url = whats 
+          ? `https://wa.me/${whats}?text=${encodeURIComponent(msg)}`
+          : `https://wa.me/?text=${encodeURIComponent(msg)}`;
+
+        window.open(url, "_blank");
+      }
+
+      // 4. Gerar folha e acionar impressão (Salvar como PDF no celular ou PC)
+      function imprimirPDF() {
+        const meuNome = document.getElementById("meuNome").value || "Prestador";
+        const minhaPix = document.getElementById("minhaPix").value;
+        const tipo = document.getElementById("tipoDoc").value;
+        const cliente = document.getElementById("clienteNome").value || "Cliente";
+        const obs = document.getElementById("observacoes").value;
+        const total = calcularTotal().toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
+        const descs = document.querySelectorAll(".item-desc");
+        const vals = document.querySelectorAll(".item-valor");
+
+        let linhasTabela = "";
+        descs.forEach((d, i) => {
+          const desc = d.value.trim();
+          const val = parseFloat(vals[i].value);
+          if (desc && !isNaN(val)) {
+            linhasTabela += `
+              <tr>
+                <td style="padding: 8px; border-bottom: 1px solid #ddd;">${desc}</td>
+                <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">R$ ${val.toFixed(2).replace(".", ",")}</td>
+              </tr>
+            `;
+          }
+        });
+
+        const folha = document.getElementById("folhaImpressao");
+        folha.innerHTML = `
+          <h1 style="text-align: center; margin-bottom: 4px;">${tipo}</h1>
+          <p style="text-align: center; color: #555; margin-bottom: 20px;">Emitido em: ${new Date().toLocaleDateString("pt-BR")}</p>
+          
+          <div style="margin-bottom: 20px; font-size: 14px;">
+            <p><strong>Emissor:</strong> ${meuNome}</p>
+            <p><strong>Cliente:</strong> ${cliente}</p>
+            ${minhaPix ? `<p><strong>Chave PIX:</strong> ${minhaPix}</p>` : ""}
+          </div>
+
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            <thead>
+              <tr style="background: #f1f5f9;">
+                <th style="padding: 8px; text-align: left; border-bottom: 2px solid #333;">Serviço / Item</th>
+                <th style="padding: 8px; text-align: right; border-bottom: 2px solid #333;">Valor</th>
+              </tr>
+            </thead>
+            <tbody>${linhasTabela}</tbody>
+          </table>
+
+          <h2 style="text-align: right; margin-bottom: 15px;">Total: ${total}</h2>
+          ${obs ? `<p style="font-size: 13px; color: #555;"><strong>Condições:</strong> ${obs}</p>` : ""}
+        `;
+
+        window.print();
+      }
+    </script>
+  </body>
+</html>
