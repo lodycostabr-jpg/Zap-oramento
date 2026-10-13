@@ -8,11 +8,15 @@
       :root {
         --primary: #059669;
         --primary-hover: #047857;
-        --bg: #0f172a;
-        --card: #1e293b;
-        --border: #334155;
+        --bg: #090d16;
+        --card: #131b2e;
+        --border: #24324d;
         --text: #f8fafc;
         --text-muted: #94a3b8;
+        --accent: #38bdf8;
+        --success: #10b981;
+        --danger: #ef4444;
+        --warning: #f59e0b;
       }
 
       * {
@@ -25,14 +29,16 @@
       body {
         background-color: var(--bg);
         color: var(--text);
-        padding: 20px 12px;
+        padding: 16px 12px;
         display: flex;
         justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
       }
 
       .container {
         width: 100%;
-        max-width: 520px;
+        max-width: 620px;
         display: flex;
         flex-direction: column;
         gap: 16px;
@@ -40,11 +46,11 @@
 
       header {
         text-align: center;
-        margin-bottom: 8px;
+        margin-bottom: 4px;
       }
 
       header h1 {
-        font-size: 24px;
+        font-size: 26px;
         color: #34d399;
         display: flex;
         align-items: center;
@@ -53,7 +59,7 @@
       }
 
       header p {
-        font-size: 13px;
+        font-size: 14px;
         color: var(--text-muted);
         margin-top: 4px;
       }
@@ -61,24 +67,29 @@
       .card {
         background: var(--card);
         border: 1px solid var(--border);
-        border-radius: 12px;
+        border-radius: 14px;
         padding: 16px;
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 14px;
+        width: 100%;
+        overflow: hidden;
       }
 
       .card h2 {
-        font-size: 16px;
-        color: #38bdf8;
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--accent);
         border-bottom: 1px solid var(--border);
-        padding-bottom: 6px;
+        padding-bottom: 8px;
+        letter-spacing: 0.3px;
       }
 
       .campo {
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 6px;
+        width: 100%;
       }
 
       label {
@@ -89,64 +100,107 @@
       }
 
       input, select, textarea {
-        background: #0f172a;
+        background: #090d16;
         border: 1px solid var(--border);
         border-radius: 8px;
-        padding: 10px 12px;
+        padding: 12px;
         color: #fff;
         font-size: 15px;
         outline: none;
+        width: 100%;
+        min-width: 0;
+        transition: border-color 0.2s, box-shadow 0.2s;
       }
 
       input:focus, select:focus, textarea:focus {
         border-color: #34d399;
       }
 
+      /* Classes dinâmicas de validação */
+      input.valido {
+        border-color: var(--success) !important;
+        box-shadow: 0 0 8px rgba(16, 185, 129, 0.2);
+      }
+
+      input.invalido {
+        border-color: var(--danger) !important;
+        box-shadow: 0 0 8px rgba(239, 68, 68, 0.3);
+      }
+
+      input.atencao {
+        border-color: var(--warning) !important;
+      }
+
+      .msg-validacao {
+        font-size: 12px;
+        font-weight: 600;
+        margin-top: 2px;
+        display: none;
+      }
+
       .linha-dupla {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 10px;
+        width: 100%;
       }
 
-      /* Lista de Itens */
+      /* Itens de Serviço */
       .item-linha {
         display: grid;
-        grid-template-columns: 2fr 1fr auto;
+        grid-template-columns: minmax(0, 1.8fr) minmax(0, 1.1fr) 42px;
         gap: 8px;
         align-items: center;
+        width: 100%;
         margin-bottom: 8px;
+      }
+
+      .item-linha input {
+        min-width: 0;
       }
 
       .btn-remover {
         background: #ef4444;
         color: white;
         border: none;
-        border-radius: 6px;
-        width: 34px;
-        height: 38px;
+        border-radius: 8px;
+        width: 100%;
+        height: 44px;
         cursor: pointer;
+        font-size: 16px;
         font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.2s;
+      }
+
+      .btn-remover:active {
+        transform: scale(0.94);
+        background: #dc2626;
       }
 
       .btn-adicionar {
-        background: #334155;
-        color: #38bdf8;
-        border: 1px dashed #38bdf8;
+        background: #1e293b;
+        color: var(--accent);
+        border: 1px dashed var(--accent);
         border-radius: 8px;
-        padding: 8px;
+        padding: 11px;
+        font-size: 14px;
         font-weight: 600;
         cursor: pointer;
+        width: 100%;
         transition: 0.2s;
       }
 
       .btn-adicionar:hover {
-        background: #1e293b;
+        background: #24324d;
       }
 
       .total-box {
         background: #090d16;
-        padding: 12px 16px;
-        border-radius: 8px;
+        padding: 14px 16px;
+        border-radius: 10px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -156,7 +210,57 @@
         border: 1px solid #059669;
       }
 
-      /* Ações principais */
+      /* Assistente de Observações */
+      .assistente-box {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        background: #0c1220;
+        border: 1px dashed #38bdf8;
+        border-radius: 10px;
+        padding: 12px;
+      }
+
+      .assistente-cabecalho {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .assistente-cabecalho span {
+        font-size: 13px;
+        font-weight: 700;
+        color: #38bdf8;
+      }
+
+      .chips-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .chip-btn {
+        background: #1e293b;
+        border: 1px solid #334155;
+        color: #e2e8f0;
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: 0.15s;
+      }
+
+      .chip-btn:hover {
+        border-color: #38bdf8;
+        color: #38bdf8;
+      }
+
+      .chip-btn:active {
+        background: #38bdf8;
+        color: #090d16;
+      }
+
+      /* Botões de Ação */
       .acoes {
         display: flex;
         flex-direction: column;
@@ -167,7 +271,7 @@
         background: #25d366;
         color: #0b141a;
         border: none;
-        padding: 14px;
+        padding: 15px;
         font-size: 16px;
         font-weight: bold;
         border-radius: 10px;
@@ -184,37 +288,43 @@
       }
 
       .btn-pdf {
-        background: #38bdf8;
+        background: var(--accent);
         color: #0f172a;
         border: none;
-        padding: 12px;
+        padding: 13px;
         font-size: 15px;
         font-weight: bold;
         border-radius: 10px;
         cursor: pointer;
       }
 
-      /* VISUAL DE IMPRESSÃO / PDF LIMPO */
+      @media (max-width: 380px) {
+        .linha-dupla {
+          grid-template-columns: 1fr;
+        }
+        .item-linha {
+          grid-template-columns: 1.6fr 1fr 38px;
+          gap: 6px;
+        }
+      }
+
+      /* Estilos para impressão / PDF */
       @media print {
         body {
           background: white !important;
           color: black !important;
           padding: 0;
         }
-
         .container {
           max-width: 100%;
         }
-
-        header, .card, .acoes, .btn-adicionar, .btn-remover {
+        header, .card, .acoes, .btn-adicionar, .btn-remover, .assistente-box {
           display: none !important;
         }
-
         #folhaImpressao {
           display: block !important;
           color: black;
           padding: 30px;
-          border: 1px solid #ccc;
         }
       }
 
@@ -230,17 +340,23 @@
         <p>Crie orçamentos e recibos profissionais em segundos</p>
       </header>
 
-      <!-- Meus Dados (Fica gravado na memória do aparelho) -->
+      <!-- 1. Dados do Prestador -->
       <div class="card">
         <h2>1. Meus Dados (Salvos no aparelho)</h2>
         <div class="campo">
           <label>Seu Nome ou Nome do Negócio</label>
-          <input type="text" id="meuNome" placeholder="Ex: Silva Manutenções Elétricas" onchange="salvarMeusDados()" />
+          <input type="text" id="meuNome" placeholder="Ex: Silva Manutenções" onchange="salvarMeusDados()" />
         </div>
+
         <div class="linha-dupla">
           <div class="campo">
-            <label>Sua Chave PIX</label>
-            <input type="text" id="minhaPix" placeholder="CPF, Celular ou E-mail" onchange="salvarMeusDados()" />
+            <label>Tipo de Chave PIX</label>
+            <select id="tipoPix" onchange="aoMudarTipoPix()">
+              <option value="cpf">CPF</option>
+              <option value="telefone">Celular</option>
+              <option value="email">E-mail</option>
+              <option value="aleatoria">Chave Aleatória</option>
+            </select>
           </div>
           <div class="campo">
             <label>Tipo de Documento</label>
@@ -250,9 +366,21 @@
             </select>
           </div>
         </div>
+
+        <div class="campo">
+          <label>Chave PIX</label>
+          <input 
+            type="text" 
+            id="minhaPix" 
+            placeholder="Digite os 11 números do CPF" 
+            oninput="validarCampoPix()" 
+            onchange="salvarMeusDados()" 
+          />
+          <small id="statusPix" class="msg-validacao"></small>
+        </div>
       </div>
 
-      <!-- Dados do Cliente -->
+      <!-- 2. Dados do Cliente -->
       <div class="card">
         <h2>2. Dados do Cliente</h2>
         <div class="linha-dupla">
@@ -267,7 +395,7 @@
         </div>
       </div>
 
-      <!-- Serviços / Itens -->
+      <!-- 3. Serviços ou Produtos -->
       <div class="card">
         <h2>3. Serviços ou Produtos</h2>
         <div id="listaItens">
@@ -285,15 +413,30 @@
         </div>
       </div>
 
-      <!-- Observações / Validade -->
+      <!-- 4. Observações / Assistente -->
       <div class="card">
+        <h2>4. Condições e Termos</h2>
+        <div class="assistente-box">
+          <div class="assistente-cabecalho">
+            <span>✨ Gerador Rápido de Cláusulas</span>
+            <small style="color: #64748b; font-size: 11px;">1-Clique para aplicar</small>
+          </div>
+          <div class="chips-container">
+            <button class="chip-btn" onclick="inserirClausula('padrao')">📅 Padrão (50% entrada / 50% entrega)</button>
+            <button class="chip-btn" onclick="inserirClausula('garantia')">🛡️ Garantia de 90 Dias</button>
+            <button class="chip-btn" onclick="inserirClausula('materiais')">📦 Materiais à parte</button>
+            <button class="chip-btn" onclick="inserirClausula('desconto')">💰 5% desconto à vista</button>
+            <button class="chip-btn" onclick="inserirClausula('completo')" style="border-color: #34d399; color: #34d399;">🤖 Proposta Completa</button>
+          </div>
+        </div>
+
         <div class="campo">
-          <label>Condições / Observações</label>
-          <textarea id="observacoes" rows="2" placeholder="Ex: Válido por 7 dias. Pagamento 50% no início e 50% na conclusão."></textarea>
+          <label>Texto Final de Observações</label>
+          <textarea id="observacoes" rows="3" placeholder="Clique num botão acima ou digite as condições..."></textarea>
         </div>
       </div>
 
-      <!-- Botões de Ação -->
+      <!-- Ações -->
       <div class="acoes">
         <button class="btn-whats" onclick="enviarWhatsApp()">
           📲 Enviar Proposta pelo WhatsApp
@@ -303,25 +446,198 @@
         </button>
       </div>
 
-      <!-- Folha formatada gerada dinamicamente para o PDF/Impressão -->
       <div id="folhaImpressao"></div>
     </div>
 
     <script>
-      // 1. Carrega dados do prestador salvos no navegador (localStorage)
+      // ==========================================
+      // SISTEMA DE ÁUDIO WEB (SEM ARQUIVOS EXTERNOS)
+      // ==========================================
+      let audioCtx = null;
+      function getAudioContext() {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === "suspended") {
+          audioCtx.resume();
+        }
+        return audioCtx;
+      }
+
+      // Som agradável de sucesso (acorde harmônico ascendente)
+      function somConfirmacao() {
+        try {
+          const ctx = getAudioContext();
+          const now = ctx.currentTime;
+
+          // Nota 1 (Mi / E5 - 659.25Hz)
+          const osc1 = ctx.createOscillator();
+          const gain1 = ctx.createGain();
+          osc1.type = "sine";
+          osc1.frequency.setValueAtTime(659.25, now);
+          gain1.gain.setValueAtTime(0.15, now);
+          gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+          osc1.connect(gain1);
+          gain1.connect(ctx.destination);
+          osc1.start(now);
+          osc1.stop(now + 0.15);
+
+          // Nota 2 (Lá / A5 - 880Hz)
+          const osc2 = ctx.createOscillator();
+          const gain2 = ctx.createGain();
+          osc2.type = "sine";
+          osc2.frequency.setValueAtTime(880, now + 0.1);
+          gain2.gain.setValueAtTime(0.18, now + 0.1);
+          gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+          osc2.connect(gain2);
+          gain2.connect(ctx.destination);
+          osc2.start(now + 0.1);
+          osc2.stop(now + 0.35);
+        } catch (e) {
+          console.log("Áudio não disponível", e);
+        }
+      }
+
+      // Som de alerta/erro (tom grave descendente)
+      function somErro() {
+        try {
+          const ctx = getAudioContext();
+          const now = ctx.currentTime;
+
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = "sawtooth";
+          osc.frequency.setValueAtTime(220, now);
+          osc.frequency.linearRampToValueAtTime(120, now + 0.22);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.22);
+        } catch (e) {
+          console.log("Áudio não disponível", e);
+        }
+      }
+
+      // ==========================================
+      // VALIDAÇÃO OFICIAL DE CPF (RECEITA FEDERAL)
+      // ==========================================
+      function testarValidadeCPF(strCPF) {
+        let cpf = strCPF.replace(/\D/g, "");
+        if (cpf.length !== 11) return false;
+        if (/^(\d)\1{10}$/.test(cpf)) return false; // descarta 11111111111, 22222222222, etc.
+
+        let soma = 0;
+        for (let i = 0; i < 9; i++) {
+          soma += parseInt(cpf.charAt(i)) * (10 - i);
+        }
+        let resto = 11 - (soma % 11);
+        let dig1 = (resto === 10 || resto === 11) ? 0 : resto;
+        if (dig1 !== parseInt(cpf.charAt(9))) return false;
+
+        soma = 0;
+        for (let i = 0; i < 10; i++) {
+          soma += parseInt(cpf.charAt(i)) * (11 - i);
+        }
+        resto = 11 - (soma % 11);
+        let dig2 = (resto === 10 || resto === 11) ? 0 : resto;
+        if (dig2 !== parseInt(cpf.charAt(10))) return false;
+
+        return true;
+      }
+
+      function formatarMascaraCPF(v) {
+        v = v.replace(/\D/g, "").slice(0, 11);
+        if (v.length > 9) return v.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, "$1.$2.$3-$4");
+        if (v.length > 6) return v.replace(/(\d{3})(\d{3})(\d{1,3})/, "$1.$2.$3");
+        if (v.length > 3) return v.replace(/(\d{3})(\d{1,3})/, "$1.$2");
+        return v;
+      }
+
+      function validarCampoPix() {
+        const tipo = document.getElementById("tipoPix").value;
+        const input = document.getElementById("minhaPix");
+        const status = document.getElementById("statusPix");
+
+        input.classList.remove("valido", "invalido", "atencao");
+        status.style.display = "none";
+
+        if (!input.value.trim()) return true;
+
+        if (tipo === "cpf") {
+          // Aplica formatação automática com pontos e traço
+          const cursor = input.selectionStart;
+          input.value = formatarMascaraCPF(input.value);
+
+          const apenasNums = input.value.replace(/\D/g, "");
+
+          if (apenasNums.length === 11) {
+            if (testarValidadeCPF(apenasNums)) {
+              input.classList.add("valido");
+              status.innerText = "✅ CPF válido";
+              status.style.color = "var(--success)";
+              status.style.display = "block";
+              return true;
+            } else {
+              input.classList.add("invalido");
+              status.innerText = "❌ CPF inválido! Verifique os números digitados.";
+              status.style.color = "var(--danger)";
+              status.style.display = "block";
+              return false;
+            }
+          } else {
+            input.classList.add("atencao");
+            status.innerText = `⏳ Digitando CPF... (${apenasNums.length}/11 números)`;
+            status.style.color = "var(--warning)";
+            status.style.display = "block";
+            return false;
+          }
+        }
+
+        return true;
+      }
+
+      function aoMudarTipoPix() {
+        const tipo = document.getElementById("tipoPix").value;
+        const input = document.getElementById("minhaPix");
+        input.value = "";
+        input.classList.remove("valido", "invalido", "atencao");
+        document.getElementById("statusPix").style.display = "none";
+
+        if (tipo === "cpf") input.placeholder = "000.000.000-00";
+        else if (tipo === "telefone") input.placeholder = "(11) 99999-9999";
+        else if (tipo === "email") input.placeholder = "seuemail@exemplo.com";
+        else input.placeholder = "Cole a chave aleatória";
+
+        salvarMeusDados();
+      }
+
+      // ==========================================
+      // PERSISTÊNCIA LOCAL (localStorage)
+      // ==========================================
       window.onload = function () {
         const nomeSalvo = localStorage.getItem("prestador_nome");
         const pixSalva = localStorage.getItem("prestador_pix");
+        const tipoPixSalvo = localStorage.getItem("prestador_tipo_pix");
+
         if (nomeSalvo) document.getElementById("meuNome").value = nomeSalvo;
-        if (pixSalva) document.getElementById("minhaPix").value = pixSalva;
+        if (tipoPixSalvo) document.getElementById("tipoPix").value = tipoPixSalvo;
+        if (pixSalva) {
+          document.getElementById("minhaPix").value = pixSalva;
+          validarCampoPix();
+        }
       };
 
       function salvarMeusDados() {
         localStorage.setItem("prestador_nome", document.getElementById("meuNome").value);
         localStorage.setItem("prestador_pix", document.getElementById("minhaPix").value);
+        localStorage.setItem("prestador_tipo_pix", document.getElementById("tipoPix").value);
       }
 
-      // 2. Gerenciador de itens/serviços
+      // ==========================================
+      // GESTÃO DE ITENS E CÁLCULO
+      // ==========================================
       function adicionarItem() {
         const lista = document.getElementById("listaItens");
         const div = document.createElement("div");
@@ -340,7 +656,8 @@
           btn.parentElement.remove();
           atualizarTotal();
         } else {
-          alert("O documento precisa ter pelo menos um item.");
+          somErro();
+          alert("O documento precisa de pelo menos um serviço.");
         }
       }
 
@@ -362,8 +679,83 @@
         });
       }
 
-      // 3. Montar a mensagem e abrir o WhatsApp do cliente
+      // ==========================================
+      // ASSISTENTE DE TEXTO / CLÁUSULAS
+      // ==========================================
+      function inserirClausula(tipo) {
+        const campoObs = document.getElementById("observacoes");
+        let textoAtual = campoObs.value.trim();
+
+        const clausulas = {
+          padrao: "Proposta válida por 7 dias. Pagamento: 50% de entrada e 50% na conclusão dos trabalhos.",
+          garantia: "Garantia legal de 90 dias sobre a mão de obra prestada, mediante apresentação desta proposta.",
+          materiais: "Valores referentes apenas à execução da mão de obra. Materiais extras ficam por conta do cliente.",
+          desconto: "Pagamento integral à vista no PIX conta com 5% de desconto promocional."
+        };
+
+        if (tipo === "completo") {
+          const tipoDoc = document.getElementById("tipoDoc").value;
+          if (tipoDoc === "RECIBO DE PAGAMENTO") {
+            campoObs.value = "Declaro que o valor acima foi recebido e quitado integralmente. Garantia de 90 dias sobre os serviços executados.";
+          } else {
+            campoObs.value = "Validade desta proposta: 7 dias corridos.\nCondições: 50% de entrada e 50% na entrega.\nGarantia de 90 dias sobre a mão de obra.\nMateriais necessários não inclusos.";
+          }
+          somConfirmacao();
+          return;
+        }
+
+        if (textoAtual.length > 0) {
+          campoObs.value = textoAtual + "\n" + clausulas[tipo];
+        } else {
+          campoObs.value = clausulas[tipo];
+        }
+        somConfirmacao();
+      }
+
+      // ==========================================
+      // AÇÕES (WHATSAPP E PDF)
+      // ==========================================
+      function validarAntesDeEnviar() {
+        const tipoPix = document.getElementById("tipoPix").value;
+        const chavePix = document.getElementById("minhaPix").value.trim();
+
+        // Se o tipo for CPF e estiver preenchido com erro
+        if (tipoPix === "cpf" && chavePix.length > 0) {
+          const cpfLimpo = chavePix.replace(/\D/g, "");
+          if (cpfLimpo.length !== 11 || !testarValidadeCPF(cpfLimpo)) {
+            somErro();
+            document.getElementById("minhaPix").focus();
+            alert("⚠️ Atenção: O CPF informado na Chave PIX é inválido. Corrija antes de gerar o documento!");
+            return false;
+          }
+        }
+
+        // Verifica itens
+        const descs = document.querySelectorAll(".item-desc");
+        const vals = document.querySelectorAll(".item-valor");
+        let temItemValido = false;
+
+        descs.forEach((d, i) => {
+          if (d.value.trim() && !isNaN(parseFloat(vals[i].value))) {
+            temItemValido = true;
+          }
+        });
+
+        if (!temItemValido) {
+          somErro();
+          alert("Por favor, preencha ao menos a descrição e o valor de 1 serviço.");
+          return false;
+        }
+
+        return true;
+      }
+
       function enviarWhatsApp() {
+        if (!validarAntesDeEnviar()) return;
+
+        // Toca som de confirmação imediato
+        somConfirmacao();
+
         const meuNome = document.getElementById("meuNome").value.trim() || "Prestador";
         const minhaPix = document.getElementById("minhaPix").value.trim();
         const tipo = document.getElementById("tipoDoc").value;
@@ -375,26 +767,17 @@
         const vals = document.querySelectorAll(".item-valor");
 
         let listaTexto = "";
-        let temItem = false;
-
         descs.forEach((d, i) => {
           const descTexto = d.value.trim();
           const valorNum = parseFloat(vals[i].value);
           if (descTexto && !isNaN(valorNum)) {
-            temItem = true;
             listaTexto += `• ${descTexto}: R$ ${valorNum.toFixed(2).replace(".", ",")}\n`;
           }
         });
 
-        if (!temItem) {
-          alert("Por favor, preencha ao menos uma descrição e um valor.");
-          return;
-        }
-
         const totalFormatado = calcularTotal().toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
         const dataHoje = new Date().toLocaleDateString("pt-BR");
 
-        // Formatação profissional do texto para o WhatsApp
         let msg = `📄 *${tipo} DE SERVIÇO*\n\n`;
         msg += `👤 *Cliente:* ${cliente}\n`;
         msg += `🛠️ *Profissional:* ${meuNome}\n`;
@@ -404,16 +787,11 @@
         msg += `─────────────────────────\n`;
         msg += `💰 *TOTAL:* ${totalFormatado}\n\n`;
 
-        if (minhaPix) {
-          msg += `🔑 *Chave PIX:* ${minhaPix}\n`;
-        }
-        if (obs) {
-          msg += `📌 *Obs:* ${obs}\n`;
-        }
+        if (minhaPix) msg += `🔑 *Chave PIX:* ${minhaPix}\n`;
+        if (obs) msg += `📌 *Condições / Observações:*\n${obs}\n`;
 
-        msg += `\n_Agradecemos pela preferência!_`;
+        msg += `\n_Emitido via ZapOrçamento_`;
 
-        // Se o número não tiver código do país (55), adiciona automaticamente
         if (whats && !whats.startsWith("55") && whats.length >= 10) {
           whats = "55" + whats;
         }
@@ -422,11 +800,18 @@
           ? `https://wa.me/${whats}?text=${encodeURIComponent(msg)}`
           : `https://wa.me/?text=${encodeURIComponent(msg)}`;
 
-        window.open(url, "_blank");
+        // Abre após 220ms para o som tocar com nitidez
+        setTimeout(() => {
+          window.open(url, "_blank");
+        }, 220);
       }
 
-      // 4. Gerar folha e acionar impressão (Salvar como PDF no celular ou PC)
       function imprimirPDF() {
+        if (!validarAntesDeEnviar()) return;
+
+        // Toca som de confirmação imediato
+        somConfirmacao();
+
         const meuNome = document.getElementById("meuNome").value || "Prestador";
         const minhaPix = document.getElementById("minhaPix").value;
         const tipo = document.getElementById("tipoDoc").value;
@@ -444,8 +829,8 @@
           if (desc && !isNaN(val)) {
             linhasTabela += `
               <tr>
-                <td style="padding: 8px; border-bottom: 1px solid #ddd;">${desc}</td>
-                <td style="padding: 8px; border-bottom: 1px solid #ddd; text-align: right;">R$ ${val.toFixed(2).replace(".", ",")}</td>
+                <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">${desc}</td>
+                <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right;">R$ ${val.toFixed(2).replace(".", ",")}</td>
               </tr>
             `;
           }
@@ -453,30 +838,33 @@
 
         const folha = document.getElementById("folhaImpressao");
         folha.innerHTML = `
-          <h1 style="text-align: center; margin-bottom: 4px;">${tipo}</h1>
-          <p style="text-align: center; color: #555; margin-bottom: 20px;">Emitido em: ${new Date().toLocaleDateString("pt-BR")}</p>
+          <h1 style="text-align: center; font-size: 24px; margin-bottom: 4px;">${tipo}</h1>
+          <p style="text-align: center; color: #64748b; margin-bottom: 24px;">Data: ${new Date().toLocaleDateString("pt-BR")}</p>
           
-          <div style="margin-bottom: 20px; font-size: 14px;">
-            <p><strong>Emissor:</strong> ${meuNome}</p>
+          <div style="margin-bottom: 20px; font-size: 15px; line-height: 1.6;">
+            <p><strong>Profissional:</strong> ${meuNome}</p>
             <p><strong>Cliente:</strong> ${cliente}</p>
             ${minhaPix ? `<p><strong>Chave PIX:</strong> ${minhaPix}</p>` : ""}
           </div>
 
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
             <thead>
-              <tr style="background: #f1f5f9;">
-                <th style="padding: 8px; text-align: left; border-bottom: 2px solid #333;">Serviço / Item</th>
-                <th style="padding: 8px; text-align: right; border-bottom: 2px solid #333;">Valor</th>
+              <tr style="background: #f8fafc;">
+                <th style="padding: 10px; text-align: left; border-bottom: 2px solid #334155;">Serviço</th>
+                <th style="padding: 10px; text-align: right; border-bottom: 2px solid #334155;">Valor</th>
               </tr>
             </thead>
             <tbody>${linhasTabela}</tbody>
           </table>
 
-          <h2 style="text-align: right; margin-bottom: 15px;">Total: ${total}</h2>
-          ${obs ? `<p style="font-size: 13px; color: #555;"><strong>Condições:</strong> ${obs}</p>` : ""}
+          <h2 style="text-align: right; margin-bottom: 15px; color: #059669;">Total: ${total}</h2>
+          ${obs ? `<div style="margin-top: 20px; padding: 12px; background: #f8fafc; border-left: 4px solid #38bdf8; font-size: 13px;"><p style="white-space: pre-wrap;"><strong>Condições:</strong>\n${obs}</p></div>` : ""}
         `;
 
-        window.print();
+        // Aciona o diálogo de impressão após 250ms
+        setTimeout(() => {
+          window.print();
+        }, 250);
       }
     </script>
   </body>
