@@ -4,6 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ZapOrçamento - Orçamentos e Recibos Rápidos</title>
+
+    <!-- Configurações PWA (Instalação no Telemóvel) -->
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#090d16" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="ZapOrçamento" />
+
     <style>
       :root {
         --primary: #059669;
@@ -29,7 +38,7 @@
       body {
         background-color: var(--bg);
         color: var(--text);
-        padding: 16px 12px;
+        padding: 16px 12px 40px 12px;
         display: flex;
         justify-content: center;
         align-items: flex-start;
@@ -64,6 +73,15 @@
         margin-top: 4px;
       }
 
+      .marca-dagua-app {
+        font-size: 11px;
+        color: #475569;
+        text-align: center;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+
       .card {
         background: var(--card);
         border: 1px solid var(--border);
@@ -83,6 +101,9 @@
         border-bottom: 1px solid var(--border);
         padding-bottom: 8px;
         letter-spacing: 0.3px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
 
       .campo {
@@ -116,7 +137,6 @@
         border-color: #34d399;
       }
 
-      /* Classes dinâmicas de validação */
       input.valido {
         border-color: var(--success) !important;
         box-shadow: 0 0 8px rgba(16, 185, 129, 0.2);
@@ -143,6 +163,38 @@
         grid-template-columns: 1fr 1fr;
         gap: 10px;
         width: 100%;
+      }
+
+      /* Upload e Pré-visualização do Logótipo */
+      .logo-upload-box {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: #090d16;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px dashed var(--border);
+      }
+
+      .logo-preview-img {
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        background: #1e293b;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        display: none;
+      }
+
+      .btn-del-logo {
+        background: #ef4444;
+        color: #fff;
+        border: none;
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-size: 12px;
+        cursor: pointer;
+        display: none;
       }
 
       /* Itens de Serviço */
@@ -175,11 +227,6 @@
         transition: 0.2s;
       }
 
-      .btn-remover:active {
-        transform: scale(0.94);
-        background: #dc2626;
-      }
-
       .btn-adicionar {
         background: #1e293b;
         color: var(--accent);
@@ -191,10 +238,6 @@
         cursor: pointer;
         width: 100%;
         transition: 0.2s;
-      }
-
-      .btn-adicionar:hover {
-        background: #24324d;
       }
 
       .total-box {
@@ -210,7 +253,7 @@
         border: 1px solid #059669;
       }
 
-      /* Assistente de Observações */
+      /* Assistente de Cláusulas */
       .assistente-box {
         display: flex;
         flex-direction: column;
@@ -219,18 +262,6 @@
         border: 1px dashed #38bdf8;
         border-radius: 10px;
         padding: 12px;
-      }
-
-      .assistente-cabecalho {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-      }
-
-      .assistente-cabecalho span {
-        font-size: 13px;
-        font-weight: 700;
-        color: #38bdf8;
       }
 
       .chips-container {
@@ -255,12 +286,7 @@
         color: #38bdf8;
       }
 
-      .chip-btn:active {
-        background: #38bdf8;
-        color: #090d16;
-      }
-
-      /* Botões de Ação */
+      /* Ações principais */
       .acoes {
         display: flex;
         flex-direction: column;
@@ -283,10 +309,6 @@
         transition: 0.2s;
       }
 
-      .btn-whats:hover {
-        background: #20ba5a;
-      }
-
       .btn-pdf {
         background: var(--accent);
         color: #0f172a;
@@ -296,6 +318,57 @@
         font-weight: bold;
         border-radius: 10px;
         cursor: pointer;
+      }
+
+      /* Secção do Histórico */
+      .historico-lista {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-height: 280px;
+        overflow-y: auto;
+      }
+
+      .historico-item {
+        background: #090d16;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .historico-info {
+        font-size: 13px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .historico-acoes {
+        display: flex;
+        gap: 6px;
+      }
+
+      .btn-hist {
+        padding: 6px 10px;
+        border-radius: 6px;
+        border: none;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .btn-hist-load {
+        background: #38bdf8;
+        color: #090d16;
+      }
+
+      .btn-hist-del {
+        background: #ef4444;
+        color: #fff;
       }
 
       @media (max-width: 380px) {
@@ -308,7 +381,7 @@
         }
       }
 
-      /* Estilos para impressão / PDF */
+      /* ESTILOS DE IMPRESSÃO / FOLHA PDF COM MARCA D'ÁGUA */
       @media print {
         body {
           background: white !important;
@@ -318,13 +391,30 @@
         .container {
           max-width: 100%;
         }
-        header, .card, .acoes, .btn-adicionar, .btn-remover, .assistente-box {
+        header, .card, .acoes, .btn-adicionar, .btn-remover, .assistente-box, .marca-dagua-app {
           display: none !important;
         }
         #folhaImpressao {
           display: block !important;
           color: black;
           padding: 30px;
+          position: relative;
+          min-height: 90vh;
+        }
+        /* Marca d'água diagonal elegante no PDF */
+        .marca-dagua-impressao {
+          position: fixed;
+          top: 48%;
+          left: 50%;
+          transform: translate(-50%, -50%) rotate(-32deg);
+          font-size: 72px;
+          font-weight: 900;
+          color: rgba(0, 0, 0, 0.06);
+          letter-spacing: 8px;
+          text-transform: uppercase;
+          pointer-events: none;
+          z-index: 0;
+          white-space: nowrap;
         }
       }
 
@@ -343,6 +433,19 @@
       <!-- 1. Dados do Prestador -->
       <div class="card">
         <h2>1. Meus Dados (Salvos no aparelho)</h2>
+        
+        <!-- Logótipo / Imagem -->
+        <div class="campo">
+          <label>Logótipo do Negócio (Opcional - Sai no PDF)</label>
+          <div class="logo-upload-box">
+            <img id="logoPreview" class="logo-preview-img" alt="Logo" />
+            <div style="flex: 1;">
+              <input type="file" id="inputLogo" accept="image/*" onchange="salvarLogo(event)" style="padding: 6px; font-size: 13px;" />
+            </div>
+            <button type="button" id="btnRemoverLogo" class="btn-del-logo" onclick="removerLogo()">Remover</button>
+          </div>
+        </div>
+
         <div class="campo">
           <label>Seu Nome ou Nome do Negócio</label>
           <input type="text" id="meuNome" placeholder="Ex: Silva Manutenções" onchange="salvarMeusDados()" />
@@ -413,16 +516,12 @@
         </div>
       </div>
 
-      <!-- 4. Observações / Assistente -->
+      <!-- 4. Observações / Assistente Inteligente -->
       <div class="card">
         <h2>4. Condições e Termos</h2>
         <div class="assistente-box">
-          <div class="assistente-cabecalho">
-            <span>✨ Gerador Rápido de Cláusulas</span>
-            <small style="color: #64748b; font-size: 11px;">1-Clique para aplicar</small>
-          </div>
           <div class="chips-container">
-            <button class="chip-btn" onclick="inserirClausula('padrao')">📅 Padrão (50% entrada / 50% entrega)</button>
+            <button class="chip-btn" onclick="inserirClausula('padrao')">📅 Padrão (50% início / 50% fim)</button>
             <button class="chip-btn" onclick="inserirClausula('garantia')">🛡️ Garantia de 90 Dias</button>
             <button class="chip-btn" onclick="inserirClausula('materiais')">📦 Materiais à parte</button>
             <button class="chip-btn" onclick="inserirClausula('desconto')">💰 5% desconto à vista</button>
@@ -431,12 +530,11 @@
         </div>
 
         <div class="campo">
-          <label>Texto Final de Observações</label>
           <textarea id="observacoes" rows="3" placeholder="Clique num botão acima ou digite as condições..."></textarea>
         </div>
       </div>
 
-      <!-- Ações -->
+      <!-- Ações Principais -->
       <div class="acoes">
         <button class="btn-whats" onclick="enviarWhatsApp()">
           📲 Enviar Proposta pelo WhatsApp
@@ -446,12 +544,37 @@
         </button>
       </div>
 
+      <!-- 5. Histórico de Orçamentos -->
+      <div class="card">
+        <h2>
+          <span>📜 Histórico de Propostas</span>
+          <button onclick="limparTodoHistorico()" style="background:none; border:none; color:#ef4444; font-size:12px; cursor:pointer;">Limpar Tudo</button>
+        </h2>
+        <div id="listaHistorico" class="historico-lista">
+          <p style="font-size:13px; color:#64748b; text-align:center; padding:10px;">Nenhum orçamento emitido ainda.</p>
+        </div>
+      </div>
+
+      <div class="marca-dagua-app">Desenvolvido com tecnologia • Lodysteelbr</div>
+
+      <!-- Área de Impressão / PDF -->
       <div id="folhaImpressao"></div>
     </div>
 
     <script>
       // ==========================================
-      // SISTEMA DE ÁUDIO WEB (SEM ARQUIVOS EXTERNOS)
+      // REGISTO DO SERVICE WORKER (PWA)
+      // ==========================================
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("sw.js").catch((err) => {
+            console.log("Service Worker não suportado no ambiente local:", err);
+          });
+        });
+      }
+
+      // ==========================================
+      // SISTEMA DE ÁUDIO WEB
       // ==========================================
       let audioCtx = null;
       function getAudioContext() {
@@ -464,13 +587,10 @@
         return audioCtx;
       }
 
-      // Som agradável de sucesso (acorde harmônico ascendente)
       function somConfirmacao() {
         try {
           const ctx = getAudioContext();
           const now = ctx.currentTime;
-
-          // Nota 1 (Mi / E5 - 659.25Hz)
           const osc1 = ctx.createOscillator();
           const gain1 = ctx.createGain();
           osc1.type = "sine";
@@ -482,7 +602,6 @@
           osc1.start(now);
           osc1.stop(now + 0.15);
 
-          // Nota 2 (Lá / A5 - 880Hz)
           const osc2 = ctx.createOscillator();
           const gain2 = ctx.createGain();
           osc2.type = "sine";
@@ -493,17 +612,13 @@
           gain2.connect(ctx.destination);
           osc2.start(now + 0.1);
           osc2.stop(now + 0.35);
-        } catch (e) {
-          console.log("Áudio não disponível", e);
-        }
+        } catch (e) {}
       }
 
-      // Som de alerta/erro (tom grave descendente)
       function somErro() {
         try {
           const ctx = getAudioContext();
           const now = ctx.currentTime;
-
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
           osc.type = "sawtooth";
@@ -515,31 +630,25 @@
           gain.connect(ctx.destination);
           osc.start(now);
           osc.stop(now + 0.22);
-        } catch (e) {
-          console.log("Áudio não disponível", e);
-        }
+        } catch (e) {}
       }
 
       // ==========================================
-      // VALIDAÇÃO OFICIAL DE CPF (RECEITA FEDERAL)
+      // VALIDAÇÃO OFICIAL DE CPF
       // ==========================================
       function testarValidadeCPF(strCPF) {
         let cpf = strCPF.replace(/\D/g, "");
         if (cpf.length !== 11) return false;
-        if (/^(\d)\1{10}$/.test(cpf)) return false; // descarta 11111111111, 22222222222, etc.
+        if (/^(\d)\1{10}$/.test(cpf)) return false;
 
         let soma = 0;
-        for (let i = 0; i < 9; i++) {
-          soma += parseInt(cpf.charAt(i)) * (10 - i);
-        }
+        for (let i = 0; i < 9; i++) soma += parseInt(cpf.charAt(i)) * (10 - i);
         let resto = 11 - (soma % 11);
         let dig1 = (resto === 10 || resto === 11) ? 0 : resto;
         if (dig1 !== parseInt(cpf.charAt(9))) return false;
 
         soma = 0;
-        for (let i = 0; i < 10; i++) {
-          soma += parseInt(cpf.charAt(i)) * (11 - i);
-        }
+        for (let i = 0; i < 10; i++) soma += parseInt(cpf.charAt(i)) * (11 - i);
         resto = 11 - (soma % 11);
         let dig2 = (resto === 10 || resto === 11) ? 0 : resto;
         if (dig2 !== parseInt(cpf.charAt(10))) return false;
@@ -566,14 +675,11 @@
         if (!input.value.trim()) return true;
 
         if (tipo === "cpf") {
-          // Aplica formatação automática com pontos e traço
-          const cursor = input.selectionStart;
           input.value = formatarMascaraCPF(input.value);
+          const nums = input.value.replace(/\D/g, "");
 
-          const apenasNums = input.value.replace(/\D/g, "");
-
-          if (apenasNums.length === 11) {
-            if (testarValidadeCPF(apenasNums)) {
+          if (nums.length === 11) {
+            if (testarValidadeCPF(nums)) {
               input.classList.add("valido");
               status.innerText = "✅ CPF válido";
               status.style.color = "var(--success)";
@@ -581,20 +687,19 @@
               return true;
             } else {
               input.classList.add("invalido");
-              status.innerText = "❌ CPF inválido! Verifique os números digitados.";
+              status.innerText = "❌ CPF inválido! Verifique os números.";
               status.style.color = "var(--danger)";
               status.style.display = "block";
               return false;
             }
           } else {
             input.classList.add("atencao");
-            status.innerText = `⏳ Digitando CPF... (${apenasNums.length}/11 números)`;
+            status.innerText = `⏳ Digitando CPF... (${nums.length}/11)`;
             status.style.color = "var(--warning)";
             status.style.display = "block";
             return false;
           }
         }
-
         return true;
       }
 
@@ -614,12 +719,47 @@
       }
 
       // ==========================================
-      // PERSISTÊNCIA LOCAL (localStorage)
+      // SUPORTE AO LOGÓTIPO
+      // ==========================================
+      function salvarLogo(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function (evt) {
+          const base64 = evt.target.result;
+          localStorage.setItem("prestador_logo", base64);
+          atualizarVisualizacaoLogo(base64);
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function removerLogo() {
+        localStorage.removeItem("prestador_logo");
+        document.getElementById("inputLogo").value = "";
+        atualizarVisualizacaoLogo(null);
+      }
+
+      function atualizarVisualizacaoLogo(base64) {
+        const img = document.getElementById("logoPreview");
+        const btnDel = document.getElementById("btnRemoverLogo");
+        if (base64) {
+          img.src = base64;
+          img.style.display = "block";
+          btnDel.style.display = "block";
+        } else {
+          img.style.display = "none";
+          btnDel.style.display = "none";
+        }
+      }
+
+      // ==========================================
+      // PERSISTÊNCIA E INICIALIZAÇÃO
       // ==========================================
       window.onload = function () {
         const nomeSalvo = localStorage.getItem("prestador_nome");
         const pixSalva = localStorage.getItem("prestador_pix");
         const tipoPixSalvo = localStorage.getItem("prestador_tipo_pix");
+        const logoSalvo = localStorage.getItem("prestador_logo");
 
         if (nomeSalvo) document.getElementById("meuNome").value = nomeSalvo;
         if (tipoPixSalvo) document.getElementById("tipoPix").value = tipoPixSalvo;
@@ -627,6 +767,9 @@
           document.getElementById("minhaPix").value = pixSalva;
           validarCampoPix();
         }
+        if (logoSalvo) atualizarVisualizacaoLogo(logoSalvo);
+
+        renderizarHistorico();
       };
 
       function salvarMeusDados() {
@@ -636,7 +779,7 @@
       }
 
       // ==========================================
-      // GESTÃO DE ITENS E CÁLCULO
+      // ITENS E CÁLCULO
       // ==========================================
       function adicionarItem() {
         const lista = document.getElementById("listaItens");
@@ -679,9 +822,6 @@
         });
       }
 
-      // ==========================================
-      // ASSISTENTE DE TEXTO / CLÁUSULAS
-      // ==========================================
       function inserirClausula(tipo) {
         const campoObs = document.getElementById("observacoes");
         let textoAtual = campoObs.value.trim();
@@ -689,7 +829,7 @@
         const clausulas = {
           padrao: "Proposta válida por 7 dias. Pagamento: 50% de entrada e 50% na conclusão dos trabalhos.",
           garantia: "Garantia legal de 90 dias sobre a mão de obra prestada, mediante apresentação desta proposta.",
-          materiais: "Valores referentes apenas à execução da mão de obra. Materiais extras ficam por conta do cliente.",
+          materiais: "Valores referentes apenas à mão de obra. Materiais extras ficam a cargo do cliente.",
           desconto: "Pagamento integral à vista no PIX conta com 5% de desconto promocional."
         };
 
@@ -698,7 +838,7 @@
           if (tipoDoc === "RECIBO DE PAGAMENTO") {
             campoObs.value = "Declaro que o valor acima foi recebido e quitado integralmente. Garantia de 90 dias sobre os serviços executados.";
           } else {
-            campoObs.value = "Validade desta proposta: 7 dias corridos.\nCondições: 50% de entrada e 50% na entrega.\nGarantia de 90 dias sobre a mão de obra.\nMateriais necessários não inclusos.";
+            campoObs.value = "Validade da proposta: 7 dias corridos.\nCondições: 50% de entrada e 50% na entrega.\nGarantia de 90 dias sobre a mão de obra.\nMateriais necessários não inclusos.";
           }
           somConfirmacao();
           return;
@@ -713,141 +853,208 @@
       }
 
       // ==========================================
-      // AÇÕES (WHATSAPP E PDF)
+      // HISTÓRICO DE ORÇAMENTOS
       // ==========================================
-      function validarAntesDeEnviar() {
+      function salvarNoHistorico(dados) {
+        let historico = JSON.parse(localStorage.getItem("zap_historico") || "[]");
+        historico.unshift(dados);
+        if (historico.length > 25) historico.pop(); // Guarda até 25 orçamentos
+        localStorage.setItem("zap_historico", JSON.stringify(historico));
+        renderizarHistorico();
+      }
+
+      function renderizarHistorico() {
+        const container = document.getElementById("listaHistorico");
+        const historico = JSON.parse(localStorage.getItem("zap_historico") || "[]");
+
+        if (historico.length === 0) {
+          container.innerHTML = '<p style="font-size:13px; color:#64748b; text-align:center; padding:10px;">Nenhum orçamento emitido ainda.</p>';
+          return;
+        }
+
+        container.innerHTML = "";
+        historico.forEach((item, index) => {
+          const div = document.createElement("div");
+          div.className = "historico-item";
+          div.innerHTML = `
+            <div class="historico-info">
+              <strong>${item.cliente} (${item.tipo})</strong>
+              <span style="color:#34d399; font-weight:bold;">${item.total} • ${item.data}</span>
+            </div>
+            <div class="historico-acoes">
+              <button class="btn-hist btn-hist-load" onclick="carregarDoHistorico(${index})">Abrir</button>
+              <button class="btn-hist btn-hist-del" onclick="removerDoHistorico(${index})">✕</button>
+            </div>
+          `;
+          container.appendChild(div);
+        });
+      }
+
+      function carregarDoHistorico(index) {
+        const historico = JSON.parse(localStorage.getItem("zap_historico") || "[]");
+        const item = historico[index];
+        if (!item) return;
+
+        document.getElementById("clienteNome").value = item.cliente || "";
+        document.getElementById("clienteWhats").value = item.whats || "";
+        document.getElementById("tipoDoc").value = item.tipo || "ORÇAMENTO";
+        document.getElementById("observacoes").value = item.obs || "";
+
+        const lista = document.getElementById("listaItens");
+        lista.innerHTML = "";
+        item.itens.forEach((it) => {
+          const div = document.createElement("div");
+          div.className = "item-linha";
+          div.innerHTML = `
+            <input type="text" class="item-desc" value="${it.desc}" placeholder="Descrição do serviço" />
+            <input type="number" class="item-valor" value="${it.valor}" placeholder="R$ 0,00" oninput="atualizarTotal()" />
+            <button class="btn-remover" onclick="removerItem(this)">✕</button>
+          `;
+          lista.appendChild(div);
+        });
+
+        atualizarTotal();
+        somConfirmacao();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function removerDoHistorico(index) {
+        let historico = JSON.parse(localStorage.getItem("zap_historico") || "[]");
+        historico.splice(index, 1);
+        localStorage.setItem("zap_historico", JSON.stringify(historico));
+        renderizarHistorico();
+      }
+
+      function limparTodoHistorico() {
+        if (confirm("Deseja apagar todo o histórico de orçamentos?")) {
+          localStorage.removeItem("zap_historico");
+          renderizarHistorico();
+        }
+      }
+
+      // ==========================================
+      // AÇÕES (WHATSAPP E PDF COM MARCA D'ÁGUA)
+      // ==========================================
+      function coletarDadosFormulario() {
         const tipoPix = document.getElementById("tipoPix").value;
         const chavePix = document.getElementById("minhaPix").value.trim();
 
-        // Se o tipo for CPF e estiver preenchido com erro
         if (tipoPix === "cpf" && chavePix.length > 0) {
           const cpfLimpo = chavePix.replace(/\D/g, "");
           if (cpfLimpo.length !== 11 || !testarValidadeCPF(cpfLimpo)) {
             somErro();
             document.getElementById("minhaPix").focus();
-            alert("⚠️ Atenção: O CPF informado na Chave PIX é inválido. Corrija antes de gerar o documento!");
-            return false;
+            alert("⚠️ Atenção: O CPF informado na Chave PIX é inválido. Corrija antes de prosseguir!");
+            return null;
           }
         }
 
-        // Verifica itens
         const descs = document.querySelectorAll(".item-desc");
         const vals = document.querySelectorAll(".item-valor");
-        let temItemValido = false;
+        let itensValidos = [];
 
-        descs.forEach((d, i) => {
-          if (d.value.trim() && !isNaN(parseFloat(vals[i].value))) {
-            temItemValido = true;
-          }
-        });
-
-        if (!temItemValido) {
-          somErro();
-          alert("Por favor, preencha ao menos a descrição e o valor de 1 serviço.");
-          return false;
-        }
-
-        return true;
-      }
-
-      function enviarWhatsApp() {
-        if (!validarAntesDeEnviar()) return;
-
-        // Toca som de confirmação imediato
-        somConfirmacao();
-
-        const meuNome = document.getElementById("meuNome").value.trim() || "Prestador";
-        const minhaPix = document.getElementById("minhaPix").value.trim();
-        const tipo = document.getElementById("tipoDoc").value;
-        const cliente = document.getElementById("clienteNome").value.trim() || "Cliente";
-        let whats = document.getElementById("clienteWhats").value.replace(/\D/g, "");
-        const obs = document.getElementById("observacoes").value.trim();
-
-        const descs = document.querySelectorAll(".item-desc");
-        const vals = document.querySelectorAll(".item-valor");
-
-        let listaTexto = "";
-        descs.forEach((d, i) => {
-          const descTexto = d.value.trim();
-          const valorNum = parseFloat(vals[i].value);
-          if (descTexto && !isNaN(valorNum)) {
-            listaTexto += `• ${descTexto}: R$ ${valorNum.toFixed(2).replace(".", ",")}\n`;
-          }
-        });
-
-        const totalFormatado = calcularTotal().toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-        const dataHoje = new Date().toLocaleDateString("pt-BR");
-
-        let msg = `📄 *${tipo} DE SERVIÇO*\n\n`;
-        msg += `👤 *Cliente:* ${cliente}\n`;
-        msg += `🛠️ *Profissional:* ${meuNome}\n`;
-        msg += `📅 *Data:* ${dataHoje}\n`;
-        msg += `─────────────────────────\n`;
-        msg += `📋 *ITENS:*\n${listaTexto}`;
-        msg += `─────────────────────────\n`;
-        msg += `💰 *TOTAL:* ${totalFormatado}\n\n`;
-
-        if (minhaPix) msg += `🔑 *Chave PIX:* ${minhaPix}\n`;
-        if (obs) msg += `📌 *Condições / Observações:*\n${obs}\n`;
-
-        msg += `\n_Emitido via ZapOrçamento_`;
-
-        if (whats && !whats.startsWith("55") && whats.length >= 10) {
-          whats = "55" + whats;
-        }
-
-        const url = whats 
-          ? `https://wa.me/${whats}?text=${encodeURIComponent(msg)}`
-          : `https://wa.me/?text=${encodeURIComponent(msg)}`;
-
-        // Abre após 220ms para o som tocar com nitidez
-        setTimeout(() => {
-          window.open(url, "_blank");
-        }, 220);
-      }
-
-      function imprimirPDF() {
-        if (!validarAntesDeEnviar()) return;
-
-        // Toca som de confirmação imediato
-        somConfirmacao();
-
-        const meuNome = document.getElementById("meuNome").value || "Prestador";
-        const minhaPix = document.getElementById("minhaPix").value;
-        const tipo = document.getElementById("tipoDoc").value;
-        const cliente = document.getElementById("clienteNome").value || "Cliente";
-        const obs = document.getElementById("observacoes").value;
-        const total = calcularTotal().toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-
-        const descs = document.querySelectorAll(".item-desc");
-        const vals = document.querySelectorAll(".item-valor");
-
-        let linhasTabela = "";
         descs.forEach((d, i) => {
           const desc = d.value.trim();
           const val = parseFloat(vals[i].value);
           if (desc && !isNaN(val)) {
-            linhasTabela += `
-              <tr>
-                <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">${desc}</td>
-                <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right;">R$ ${val.toFixed(2).replace(".", ",")}</td>
-              </tr>
-            `;
+            itensValidos.push({ desc: desc, valor: val });
           }
+        });
+
+        if (itensValidos.length === 0) {
+          somErro();
+          alert("Por favor, preencha a descrição e o valor de pelo menos 1 serviço.");
+          return null;
+        }
+
+        return {
+          meuNome: document.getElementById("meuNome").value.trim() || "Prestador",
+          minhaPix: chavePix,
+          tipo: document.getElementById("tipoDoc").value,
+          cliente: document.getElementById("clienteNome").value.trim() || "Cliente",
+          whats: document.getElementById("clienteWhats").value.replace(/\D/g, ""),
+          obs: document.getElementById("observacoes").value.trim(),
+          itens: itensValidos,
+          total: calcularTotal().toLocaleString("pt-BR", { style: "currency", currency: "BRL" }),
+          data: new Date().toLocaleDateString("pt-BR")
+        };
+      }
+
+      function enviarWhatsApp() {
+        const dados = coletarDadosFormulario();
+        if (!dados) return;
+
+        somConfirmacao();
+        salvarNoHistorico(dados);
+
+        let listaTexto = "";
+        dados.itens.forEach((it) => {
+          listaTexto += `• ${it.desc}: R$ ${it.valor.toFixed(2).replace(".", ",")}\n`;
+        });
+
+        let msg = `📄 *${dados.tipo} DE SERVIÇO*\n\n`;
+        msg += `👤 *Cliente:* ${dados.cliente}\n`;
+        msg += `🛠️ *Profissional:* ${dados.meuNome}\n`;
+        msg += `📅 *Data:* ${dados.data}\n`;
+        msg += `─────────────────────────\n`;
+        msg += `📋 *ITENS:*\n${listaTexto}`;
+        msg += `─────────────────────────\n`;
+        msg += `💰 *TOTAL:* ${dados.total}\n\n`;
+
+        if (dados.minhaPix) msg += `🔑 *Chave PIX:* ${dados.minhaPix}\n`;
+        if (dados.obs) msg += `📌 *Condições / Observações:*\n${dados.obs}\n`;
+
+        msg += `\n_Emitido via ZapOrçamento • Lodysteelbr_`;
+
+        let tel = dados.whats;
+        if (tel && !tel.startsWith("55") && tel.length >= 10) tel = "55" + tel;
+
+        const url = tel 
+          ? `https://wa.me/${tel}?text=${encodeURIComponent(msg)}`
+          : `https://wa.me/?text=${encodeURIComponent(msg)}`;
+
+        setTimeout(() => window.open(url, "_blank"), 220);
+      }
+
+      function imprimirPDF() {
+        const dados = coletarDadosFormulario();
+        if (!dados) return;
+
+        somConfirmacao();
+        salvarNoHistorico(dados);
+
+        const logoSalvo = localStorage.getItem("prestador_logo");
+
+        let linhasTabela = "";
+        dados.itens.forEach((it) => {
+          linhasTabela += `
+            <tr>
+              <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;">${it.desc}</td>
+              <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right;">R$ ${it.valor.toFixed(2).replace(".", ",")}</td>
+            </tr>
+          `;
         });
 
         const folha = document.getElementById("folhaImpressao");
         folha.innerHTML = `
-          <h1 style="text-align: center; font-size: 24px; margin-bottom: 4px;">${tipo}</h1>
-          <p style="text-align: center; color: #64748b; margin-bottom: 24px;">Data: ${new Date().toLocaleDateString("pt-BR")}</p>
+          <!-- Marca d'água Lodysteelbr no documento impresso -->
+          <div class="marca-dagua-impressao">LODYSTEELBR</div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid #0f172a; padding-bottom: 15px; margin-bottom: 20px;">
+            <div>
+              <h1 style="font-size: 24px; margin-bottom: 4px; color: #0f172a;">${dados.tipo}</h1>
+              <p style="color: #64748b; font-size: 13px;">Data de Emissão: ${dados.data}</p>
+            </div>
+            ${logoSalvo ? `<img src="${logoSalvo}" style="max-height: 65px; max-width: 150px; object-fit: contain;" />` : `<h2 style="color: #059669; font-size: 20px;">${dados.meuNome}</h2>`}
+          </div>
           
-          <div style="margin-bottom: 20px; font-size: 15px; line-height: 1.6;">
-            <p><strong>Profissional:</strong> ${meuNome}</p>
-            <p><strong>Cliente:</strong> ${cliente}</p>
-            ${minhaPix ? `<p><strong>Chave PIX:</strong> ${minhaPix}</p>` : ""}
+          <div style="margin-bottom: 20px; font-size: 14px; line-height: 1.6;">
+            <p><strong>Emissor:</strong> ${dados.meuNome}</p>
+            <p><strong>Cliente:</strong> ${dados.cliente}</p>
+            ${dados.minhaPix ? `<p><strong>Chave PIX:</strong> ${dados.minhaPix}</p>` : ""}
           </div>
 
-          <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; position:relative; z-index:1;">
             <thead>
               <tr style="background: #f8fafc;">
                 <th style="padding: 10px; text-align: left; border-bottom: 2px solid #334155;">Serviço</th>
@@ -857,14 +1064,16 @@
             <tbody>${linhasTabela}</tbody>
           </table>
 
-          <h2 style="text-align: right; margin-bottom: 15px; color: #059669;">Total: ${total}</h2>
-          ${obs ? `<div style="margin-top: 20px; padding: 12px; background: #f8fafc; border-left: 4px solid #38bdf8; font-size: 13px;"><p style="white-space: pre-wrap;"><strong>Condições:</strong>\n${obs}</p></div>` : ""}
+          <h2 style="text-align: right; margin-bottom: 15px; color: #059669;">Total: ${dados.total}</h2>
+          
+          ${dados.obs ? `<div style="margin-top: 15px; padding: 12px; background: #f8fafc; border-left: 4px solid #38bdf8; font-size: 13px;"><p style="white-space: pre-wrap;"><strong>Condições:</strong>\n${dados.obs}</p></div>` : ""}
+
+          <div style="margin-top: 40px; text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 10px;">
+            Documento emitido eletronicamente via ZapOrçamento • Marca Registrada Lodysteelbr
+          </div>
         `;
 
-        // Aciona o diálogo de impressão após 250ms
-        setTimeout(() => {
-          window.print();
-        }, 250);
+        setTimeout(() => window.print(), 250);
       }
     </script>
   </body>
